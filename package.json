@@ -1,0 +1,30 @@
+{
+  "author": {
+    "name": "Trez",
+    "email": "bartlomiej@10g.pl"
+  },
+  "bugs": {
+    "url": "https://github.com/KT-Trez/Ludo/issues"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "description": "Ludo online game.",
+  "homepage": "https://github.com/KT-Trez/Ludo#readme",
+  "keywords": [
+    "express-js",
+    "server",
+    "game",
+    "ludo"
+  ],
+  "main": "server.js",
+  "name": "chińczyk-online",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KT-Trez/Ludo.git"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "version": "0.0.1"
+}
