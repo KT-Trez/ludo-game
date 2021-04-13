@@ -1,28 +1,21 @@
 const express = require('express');
 const path = require('path');
 const events = require('./routes/events');
+const game = require('./routes/game');
+const utils = require('./src/utils');
 
 const server = express();
 const port = process.env.PORT || 3000;
-const ccs = {
-  beautifyTime(time) {
-    function twoDigit(digit) {
-      if (digit.toString().length == 1)
-        return '0' + digit;
-      else
-        return digit.toString();
-    };
-    return twoDigit(time.getHours()) + ':' + twoDigit(time.getMinutes()) + ':' + twoDigit(time.getSeconds());
-  }
-};
 
 
-// server.use(req => {
-//   console.log(`${ccs.beautifyTime(new Date())} Incoming connection. [${req.method}] [${req.headers.referer}] [${req.url}]`);
-// })
+server.use((req, res, next) => {
+  console.log(`[${utils.Utils.fullTimeAndDate(new Date())}] Incoming connection. [${req.method}] [${req.headers.referer}] [${req.url}]`);
+  next();
+})
 
 server.use(express.static(path.join(__dirname + '/static')));
-server.use(path.join(__dirname + '/events'), events);
+server.use('/events', events.router);
+server.use('/game', game.router);
 
 
 server.get('/', (req, res) => {
@@ -36,7 +29,3 @@ server.listen(port, function() {
     ' > port: ' + port + '\n' +
     '-------------------------');
 });
-
-module.exports = {
-  ccs
-};

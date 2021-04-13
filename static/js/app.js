@@ -15,6 +15,18 @@ class Board { // klasa opisująca planszę
     eventSrc: null
   }
 
+  static async loadBoard() {
+    let res = fetch('/getBoard', {
+      method: 'post',
+      body: JSON.stringify({
+        client: localStorage.getItem('player_id'),
+        room: localStorage.getItem('room_id')
+      })
+    });
+
+
+  }
+
   static loadPlayer() { // dołącza gracza do nowej sesji lub wznawia starą
     const joinFreeButton = document.getElementById('joinFree');
     joinFreeButton.onclick = async () => {
@@ -30,6 +42,7 @@ class Board { // klasa opisująca planszę
         }
       } else {
         Player.joinNewSession();
+        // Board.loadBoard();
       };
     };
   }
