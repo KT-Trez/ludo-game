@@ -18,7 +18,7 @@
     "ludo"
   ],
   "main": "server.js",
-  "name": "chińczyk-online",
+  "name": "ludo-online",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KT-Trez/Ludo.git"

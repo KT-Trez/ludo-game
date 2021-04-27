@@ -12,23 +12,33 @@
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
 
   <!-- scripts -->
-  <script type="text/javascript" src="js/app.js"></script>
+  <script type="module" src="js/app.js"></script>
+
+  <!-- modules -->
+  <script type="module" src="js/Player.js"></script>
+  <script type="module" src="js/Board.js"></script>
+  <script type="module" src="js/Utils.js"></script>
+  <script type="module" src="js/Dev.js"></script>
+
+  <!-- htjs modules -->
+  <script type="module" src="templates/lobby.js"></script>
 
 </head>
 
 <body>
 
-  <div id="main">
+  <div id="root">
 
     <div>
       <p>Dołącz do wolnego pokoju</p>
+      <input id="nick" type="text">
       <button id="joinFree">Dołącz</button>
     </div>
 
     <div>
       <p>Podaj id pokoju</p>
-      <input>
-      <button id="joinId">Dołącz</button>
+      <input type="text" disabled>
+      <button id="joinId" disabled>Dołącz</button>
     </div>
 
   </div>

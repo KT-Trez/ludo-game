@@ -1,20 +1,22 @@
 const express = require('express');
 const path = require('path');
-const events = require('./routes/events');
+const dev = require('./routes/dev');
 const game = require('./routes/game');
-const utils = require('./src/utils');
+const join = require('./routes/join');
+const Utils = require('./src/utils');
 
 const server = express();
 const port = process.env.PORT || 3000;
 
 
 server.use((req, res, next) => {
-  console.log(`[${utils.Utils.fullTimeAndDate(new Date())}] Incoming connection. [${req.method}] [${req.headers.referer}] [${req.url}]`);
+  console.log(`${Utils.fullTimeAndDate(new Date())} [INFO] Incoming connection. | ${req.method} ${req.headers.referer} ${req.url}`);
   next();
 })
 
 server.use(express.static(path.join(__dirname + '/static')));
-server.use('/events', events.router);
+server.use('/dev', dev.router);
+server.use('/join', join.router);
 server.use('/game', game.router);
 
 

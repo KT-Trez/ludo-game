@@ -1,6 +1,7 @@
-class Dev {
+console.log('Loaded: Dev.js');
+
+export default class Dev {
   constructor() {
 
   }
 }
-export const Dev;
