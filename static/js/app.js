@@ -1,4 +1,3 @@
-// import  Utils from './Utils.js';
 import Player from './classes/Player.js';
 
 import lobby from './templates/lobby.js'
