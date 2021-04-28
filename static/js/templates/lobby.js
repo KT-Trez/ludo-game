@@ -1,6 +1,6 @@
 console.log('Loaded template: lobby.js');
-import Board from '../js/Board.js';
-import Utils from '../js/Utils.js';
+import Board from '../classes/Board.js';
+import Utils from '../components/Utils.js';
 
 const lobby = { // eskportowany szablon lobby
   data: {

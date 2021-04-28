@@ -1,9 +1,11 @@
 const express = require('express');
 const path = require('path');
-const dev = require('./routes/dev');
-const game = require('./routes/game');
-const join = require('./routes/join');
-const Utils = require('./src/utils');
+
+const dev = require('./src/routes/dev');
+const game = require('./src/routes/game');
+const join = require('./src/routes/join');
+
+const Utils = require('./src/components/utils');
 
 const server = express();
 const port = process.env.PORT || 3000;
@@ -15,6 +17,9 @@ server.use((req, res, next) => {
 })
 
 server.use(express.static(path.join(__dirname + '/static')));
+server.use(express.static(path.join(__dirname + '/static/js/classes')));
+server.use(express.static(path.join(__dirname + '/static/js/components')));
+server.use(express.static(path.join(__dirname + '/static/js/templates')));
 server.use('/dev', dev.router);
 server.use('/join', join.router);
 server.use('/game', game.router);

@@ -1,7 +1,7 @@
 // import  Utils from './Utils.js';
-import Player from './Player.js';
+import Player from './classes/Player.js';
 
-import lobby from '../templates/lobby.js'
+import lobby from './templates/lobby.js'
 
 
 window.addEventListener('DOMContentLoaded', () => {

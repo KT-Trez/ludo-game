@@ -1,5 +1,5 @@
 console.log('Loaded: Player.js');
-import Utils from './Utils.js';
+import Utils from '../components/Utils.js';
 
 export default class Player { // klasa gracza; pozwala uzyskiwać połączenie do gry oraz informacje o graczu
 
