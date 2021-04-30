@@ -25,6 +25,7 @@ module.exports = class Game {
     this.roll = null;
     this.room = room;
     this.timeout = null;
+    this.skippable = false;
 
     for (let i = 0; i < room.clients.length; i++)
       this.board.players.push(new Player(room.clients[i], i));
@@ -57,8 +58,8 @@ module.exports = class Game {
           this.avaliableMoves.push(new Move('start', pawn, this));
       };
 
-      if (finishSquares.find(square => square == (pawn.square + this.roll) % this.board.squareCount) && !pawn.hasStarted) {
-        let isFinishSquareAllied = this.map.find(anyPawn => anyPawn.square == 'f' + (pawn.square + this.roll) % this.board.squareCount);
+      if (finishSquares.find(square => square == (pawn.square + this.roll) % this.board.squareCount) && (pawn.square <= this.player.current.start || pawn.square - this.roll < 0) && !pawn.hasStarted) {
+        let isFinishSquareAllied = this.map.find(anyPawn => anyPawn.square == 'f' + this.player.current.color[0] + (pawn.square + this.roll) % this.board.squareCount);
 
         if (pawn.state == 'board' && !isFinishSquareAllied)
           this.avaliableMoves.push(new Move('finish', pawn, this));
@@ -72,8 +73,19 @@ module.exports = class Game {
       )
         this.avaliableMoves.push(new Move('move', pawn, this));
     });
+    this.skippable = this.avaliableMoves.length == 0 ? true : false;
+    console.log(this);
+    console.log(this.player.current);
     console.log(this.roll);
     console.log(this.avaliableMoves);
+  }
+
+  nextTurn() {
+    console.log(this);
+    this.player.count++;
+    this.player.count = this.player.count % this.board.players.length;
+    this.skippable = false;
+    this.play();
   }
 
   play() {
@@ -82,11 +94,7 @@ module.exports = class Game {
 
     this.createMoves();
 
-    this.timeout = setTimeout(() => {
-      this.player.count++;
-      this.player.count = this.player.count % this.board.players.length;
-      this.play();
-    }, 60000);
+    this.timeout = setTimeout(() => this.nextTurn(), 60000);
   }
 
   registerMove(moveId) {
@@ -113,8 +121,10 @@ module.exports = class Game {
         state: 'finish',
         square: move.square.new
       });
-      let finishSquare = this.player.current.finish.find(square => square == move.square.new);
-      this.player.current.finish.splice(this.map.indexOf(finishSquare), 1);
+      console.log(move.square.new);
+      let finishSquare = this.player.current.finish.find(square => square == parseInt(move.square.new.slice(2, move.square.new.length)));
+      console.log(finishSquare);
+      this.player.current.finish.splice(this.player.current.finish.indexOf(finishSquare), 1);
     };
 
     function killPawn(thisGame) {
@@ -129,9 +139,12 @@ module.exports = class Game {
       };
     };
 
-    this.player.count++; // wznawianie gry
-    this.player.count = this.player.count % this.board.players.length;
-    this.play();
+    this.nextTurn();
+  }
+
+  registerSkip() {
+    clearTimeout(this.timeout);
+    this.nextTurn();
   }
 
 }

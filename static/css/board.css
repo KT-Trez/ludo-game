@@ -75,7 +75,13 @@
   border-radius: 15px;
 }
 
-/* prieview pionka */
 .prieview {
   background-color: white;
+}
+
+/* style przycisków z ruchami */
+.movesBox {}
+
+#skip {
+  display: none;
 }

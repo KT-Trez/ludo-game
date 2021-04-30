@@ -19,7 +19,7 @@ export default class Board {
     });
 
     let movesBox = document.getElementById('movesBox');
-    if (movesBox) Array.from(movesBox.children).forEach(child => child.remove());
+    if (movesBox) Array.from(movesBox.children).forEach(child => child.id != 'skip' ? child.remove() : null);
   }
 
   static async load() {
@@ -35,6 +35,9 @@ export default class Board {
 
     if (res.ok) {
       let resData = await res.json();
+
+      if (resData.skippable)
+        document.getElementById('skip').style.display = 'initial';
 
       Board.clear();
       resData.pawns.forEach(pawn => {

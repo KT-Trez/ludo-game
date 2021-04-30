@@ -1,4 +1,5 @@
 console.log('Loaded template: board.js');
+import Board from '../classes/Board.js';
 
 import Utils from '../components/utils.js';
 
@@ -77,11 +78,32 @@ const lobby = { // eskportowany szablon planszy
         console.log(`${Utils.fullTime(new Date())} [ERROR] Failed to rejoin ${localStorage.getItem('room_id')} as ${localStorage.getItem('player_id')}.`);
         return false;
       };
+    },
+    registerSkip() {
+      document.getElementById('skip').onclick = async () => {
+        console.log(`${Utils.fullTime(new Date())} [WORKING] Trying to register skip.`);
+        let res = await fetch('/game/registerSkip', {
+          method: 'post',
+          body: JSON.stringify({
+            id: localStorage.getItem('player_id'),
+            room: localStorage.getItem('room_id')
+          })
+        });
+
+        if (res.ok) {
+          clearTimeout(Board.nextLoad);
+          document.getElementById('skip').style.display = 'none';
+          Board.load();
+          console.log(`${Utils.fullTime(new Date())} [SUCCESS] Registered skip.`);
+        } else
+          console.log(`${Utils.fullTime(new Date())} [ERROR] Failed to register skip.`);
+      };
     }
   },
   async action() { // uruchomiony szablon
     console.log(`${Utils.fullTime(new Date())} [WORKING] Loading board and players.`);
     this.data.loadBoard();
+    this.data.registerSkip();
     await this.data.loadPlayers();
   },
   mount() { // montowanie i uruchamianie szablonu
@@ -109,6 +131,7 @@ const lobby = { // eskportowany szablon planszy
     </div>
 
     <div id="movesBox">
+      <button id="skip">Pomiń</button>
     </div>
     `
 }
