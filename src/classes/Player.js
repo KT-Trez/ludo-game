@@ -11,11 +11,11 @@ module.exports = class Player {
       this.pawns.push({
         id: i,
         player: this.id,
-        round: 0,
+        hasStarted: true,
         state: 'home',
         square: null
       });
-      this.finish.push(this.start + i);
+      this.finish.push(this.start + 1 + i);
     };
   }
 

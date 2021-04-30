@@ -1,0 +1,81 @@
+/* pasek informacji */
+.info_bar {}
+
+.player_box {}
+
+.player {
+  display: none;
+}
+
+.player_current {}
+
+.player_self {
+  background-color: #BDF39B;
+}
+
+.clock_box {}
+
+.clock {}
+
+/* plansza */
+.board {
+  background-color: #115f72;
+}
+
+.board>tr>td {
+  height: 40px;
+  width: 40px;
+  box-sizing: border-box;
+}
+
+.square {
+  background-color: #b4b5b3;
+}
+
+.red {
+  background-color: #ff7688;
+}
+
+.blue {
+  background-color: #767dff;
+}
+
+.green {
+  background-color: #76ff91;
+}
+
+.yellow {
+  background-color: #ffea76;
+}
+
+/* pionek */
+.pawn {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pawn>div {
+  height: 30px;
+  width: 30px;
+  background-color: black;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pawn>div>div {
+  height: 8px;
+  width: 8px;
+  border: 1px solid transparent;
+  border-radius: 15px;
+}
+
+/* prieview pionka */
+.prieview {
+  background-color: white;
+}

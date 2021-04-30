@@ -1,22 +1,26 @@
+import Board from './classes/Board.js';
 import Player from './classes/Player.js';
 
 import lobby from './templates/lobby.js'
 
 
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   console.log('Loaded: app.js');
 
-  document.getElementById('joinFree').onclick = async () => {
-    if (!document.getElementById('nick').value) return;
+  if (localStorage.getItem('player_color') && localStorage.getItem('player_id') && localStorage.getItem('room_id')) {
+    let hasRejoined = await Player.rejoin(nick);
+    if (hasRejoined)
+      document.getElementById('rejoin').onclick = () => Board.start();
+    else
+      document.getElementById('rejoin').setAttribute('disabled', true);
+  } else
+    document.getElementById('rejoin').setAttribute('disabled', true);
+
+  document.getElementById('join').onclick = async () => {
     let nick = document.getElementById('nick').value;
 
-    if (localStorage.getItem('player_color') && localStorage.getItem('player_id') && localStorage.getItem('room_id'))
-      await Player.rejoin(nick);
-    else
-      await Player.join(nick);
-
+    if (!nick) return;
+    await Player.join(nick);
     lobby.mount();
   };
-
-
 });

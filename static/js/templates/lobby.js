@@ -20,7 +20,7 @@ const lobby = { // eskportowany szablon lobby
         let resData = await res.json();
 
         for (let i = 0; i < resData.players.length; i++) { // odświeżanie użytkowników i stanu gotowości
-          document.getElementById('player' + i).innerText = resData.players[i].nick; // ustawianie nicków graczy
+          document.getElementById('player' + i).innerText = decodeURIComponent(resData.players[i].nick); // ustawianie nicków graczy
 
           let checkbox = document.getElementById('player' + i + 'Switch'); // ustawianie stanu gotowości graczy
           checkbox.checked = resData.players[i].forceStart;
@@ -48,7 +48,7 @@ const lobby = { // eskportowany szablon lobby
         if (resData.forceStart == resData.players.length && resData.forceStart > 1) { // uruchamianie gry, jeżeli lobby jest pełne
           console.log(`${Utils.fullTime(new Date())} [INFO] All ready, starting game.`);
           clearInterval(lobby.data.lobbyInterval);
-          new Board().start();
+          Board.start();
         };
 
       } else { // wykonywanie akcji przy braku informacji o lobby

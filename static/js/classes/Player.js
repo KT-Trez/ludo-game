@@ -22,7 +22,7 @@ export default class Player { // klasa gracza; pozwala uzyskiwać połączenie d
     };
   }
 
-  static async rejoin(nick) { // funkcja pozwalająca ponownie dołączyć do zapisanego pokoju
+  static async rejoin() { // funkcja pozwalająca ponownie dołączyć do zapisanego pokoju
     console.log(`${Utils.fullTime(new Date())} [WORKING] Rejoining ${localStorage.getItem('room_id')} as ${localStorage.getItem('player_id')}.`);
     let reqData = {
       color: localStorage.getItem('player_color'),
@@ -40,7 +40,6 @@ export default class Player { // klasa gracza; pozwala uzyskiwać połączenie d
       return true;
     } else {
       console.log(`${Utils.fullTime(new Date())} [ERROR] Failed to rejoin ${localStorage.getItem('room_id')} as ${localStorage.getItem('player_id')}.`);
-      await this.join(nick);
       return false;
     };
   }

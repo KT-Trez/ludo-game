@@ -9,7 +9,7 @@ module.exports = class Client {
   constructor(nick) {
     this.forceStart = false;
     this.id = new Date().getTime() + Math.random() * 1000;
-    this.nick = nick;
+    this.nick = encodeURIComponent(nick);
     this.room = Room.joinFree();
 
     let room = Room.list.find(room => room.id == this.room);

@@ -9,20 +9,23 @@
 
   <!-- stylesheets & fonts -->
   <link rel="stylesheet" href="css/master.css">
+  <link rel="stylesheet" href="css/board.css">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
 
   <!-- scripts -->
   <script type="module" src="js/app.js"></script>
 
   <!-- modules -->
-  <script type="module" src="js/classes/Player.js"></script>
   <script type="module" src="js/classes/Board.js"></script>
+  <script type="module" src="js/classes/Player.js"></script>
 
-  <script type="module" src="js/components/utils.js"></script>
   <script type="module" src="js/components/dev.js"></script>
+  <script type="module" src="js/components/utils.js"></script>
 
   <!-- templates -->
+  <script type="module" src="js/templates/board.js"></script>
   <script type="module" src="js/templates/lobby.js"></script>
+  <script type="module" src="js/templates/pawn.js"></script>
 
 </head>
 
@@ -32,14 +35,16 @@
 
     <div>
       <p>Dołącz do wolnego pokoju</p>
-      <input id="nick" type="text">
-      <button id="joinFree">Dołącz</button>
+      <input id="nick" placeholder="nick" type="text">
+      <button id="join">Dołącz</button>
+      <button id="rejoin">Dołącz ponownie</button>
     </div>
 
-    <div>
+    <!-- TODO: dodać możliwość dołączania do konkretnego pokoju -->
+    <div style="display: none;">
       <p>Podaj id pokoju</p>
-      <input type="text" disabled>
-      <button id="joinId" disabled>Dołącz</button>
+      <input placeholder="id" type="text" disabled>
+      <button id="join_id_room" disabled>Dołącz</button>
     </div>
 
   </div>

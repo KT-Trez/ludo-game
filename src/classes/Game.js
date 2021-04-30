@@ -1,3 +1,4 @@
+const Move = require('./Move.js');
 const Player = require('./Player.js');
 
 module.exports = class Game {
@@ -30,13 +31,15 @@ module.exports = class Game {
     Game.list.push(this);
   }
 
-  createMoves(pawnsPossibleToMove) {
+  createMoves() {
     this.avaliableMoves = [];
 
-    pawnsPossibleToMove.forEach((pawn, i) => {
+    let finishSquares = this.player.current.finish;
+    let moveId = 0;
+    this.player.current.pawns.forEach(pawn => {
       let move = {
         action: null,
-        id: i,
+        id: moveId,
         pawn: pawn.id,
         square: {
           new: null,
@@ -44,23 +47,32 @@ module.exports = class Game {
         }
       };
 
-      let finishSquares = this.player.current.finish;
-      if (pawn.state == 'home') {
-        move.action = 'start';
-        move.square.new = this.player.current.start;
-      } else {
-        if (finishSquares.find(square => square == pawn.square + this.roll) && pawn.round > 0)
-          move.action = 'finish';
-        else
-          move.action = 'move';
-        Object.assign(move.square, {
-          new: pawn.square + this.roll,
-          old: pawn.square
-        });
+      if (this.roll == 1 || this.roll == 6) {
+        let isHomeSquareAllied = this.map.find(anyPawn => anyPawn.square == this.player.current.start);
+
+        if (
+          (pawn.state == 'home' && !isHomeSquareAllied) ||
+          (pawn.state == 'home' && isHomeSquareAllied.player != this.player.current.id)
+        )
+          this.avaliableMoves.push(new Move('start', pawn, this));
       };
-      this.avaliableMoves.push(move);
+
+      if (finishSquares.find(square => square == (pawn.square + this.roll) % this.board.squareCount) && !pawn.hasStarted) {
+        let isFinishSquareAllied = this.map.find(anyPawn => anyPawn.square == 'f' + (pawn.square + this.roll) % this.board.squareCount);
+
+        if (pawn.state == 'board' && !isFinishSquareAllied)
+          this.avaliableMoves.push(new Move('finish', pawn, this));
+      };
+
+      let isNextSquareAllied = this.map.find(anyPawn => anyPawn.square == (pawn.square + this.roll) % this.board.squareCount);
+
+      if (
+        (pawn.state == 'board' && !isNextSquareAllied) ||
+        (pawn.state == 'board' && isNextSquareAllied.player != this.player.current.id)
+      )
+        this.avaliableMoves.push(new Move('move', pawn, this));
     });
-    console.log(this);
+    console.log(this.roll);
     console.log(this.avaliableMoves);
   }
 
@@ -68,32 +80,13 @@ module.exports = class Game {
     this.player.current = this.board.players[this.player.count];
     this.roll = Game.roll();
 
-    let pawnsPossibleToMove = [];
-    if (this.roll == 1 || this.roll == 6)
-      this.player.current.pawns.forEach(pawn => {
-        let next = this.map.find(pawn => pawn.square == this.player.start);
-
-        if (pawn.state == 'home' && !next)
-          pawnsPossibleToMove.push(pawn);
-        else if (pawn.state == 'home' && next && next.player != this.player.current.id)
-          pawnsPossibleToMove.push(pawn);
-      });
-    this.player.current.pawns.forEach(pawn => {
-      let next = this.map.find(pawn => pawn.square == pawn.square + this.roll);
-
-      if (pawn.state == 'board' && !next)
-        pawnsPossibleToMove.push(pawn);
-      else if (pawn.state == 'board' && next.player != this.player.current.id)
-        pawnsPossibleToMove.push(pawn);
-    });
-
-    this.createMoves(pawnsPossibleToMove);
+    this.createMoves();
 
     this.timeout = setTimeout(() => {
       this.player.count++;
       this.player.count = this.player.count % this.board.players.length;
       this.play();
-    }, 10000);
+    }, 60000);
   }
 
   registerMove(moveId) {
@@ -105,24 +98,16 @@ module.exports = class Game {
       killPawn(this);
       Object.assign(movingPawn, {
         state: 'board',
-        round: 0,
         square: move.square.new
       });
       this.map.push(movingPawn);
     } else if (move.action == 'move') {
       killPawn(this);
-      if (move.now > this.board.squareCount) {
-        Object.assign(movingPawn, {
-          state: 'board',
-          round: movingPawn.round++,
-          square: move.square.new % this.board.squareCount
-        });
-      } else {
-        Object.assign(movingPawn, {
-          state: 'board',
-          square: move.square.new
-        });
-      };
+      Object.assign(movingPawn, {
+        state: 'board',
+        hasStarted: false,
+        square: move.square.new
+      });
     } else if (move.action == 'finish') {
       Object.assign(movingPawn, {
         state: 'finish',
@@ -137,7 +122,7 @@ module.exports = class Game {
       if (enemyPawn) {
         Object.assign(enemyPawn, {
           state: 'home',
-          round: 0,
+          hasStarted: true,
           square: null
         });
         thisGame.map.splice(thisGame.map.indexOf(enemyPawn), 1);
