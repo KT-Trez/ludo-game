@@ -28,23 +28,23 @@
   box-sizing: border-box;
 }
 
-.square {
+.js-square {
   background-color: #b4b5b3;
 }
 
-.red {
+.js-red {
   background-color: #ff7688;
 }
 
-.blue {
+.js-blue {
   background-color: #767dff;
 }
 
-.green {
+.js-green {
   background-color: #76ff91;
 }
 
-.yellow {
+.js-yellow {
   background-color: #ffea76;
 }
 

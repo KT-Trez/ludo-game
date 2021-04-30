@@ -2,7 +2,7 @@ console.log('Loaded template: board.js');
 
 const lobby = { // eskportowany szablon pionka
   mount(pawn) { // montowanie i uruchamianie szablonu
-    let newTemplate = this.template.replace('{{playerColor}}', pawn.player);
+    let newTemplate = this.template.replace('{{playerColor}}', 'js-' + pawn.player);
     return newTemplate;
   },
   template: // szablon planszy

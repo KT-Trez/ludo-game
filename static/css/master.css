@@ -1,3 +1,4 @@
+/* main */
 * {
   margin: 0px;
   padding: 0px;
@@ -15,8 +16,35 @@ body {
   width: 100%;
 }
 
+#root {
+  height: 100%;
+  width: 100%;
+  font-family: 'Roboto';
+}
+
 .center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* fonts */
+@font-face {
+  font-family: Exo;
+  src: url('../fonts/Exo 2.0/Exo2-Regular.otf');
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url('../fonts/Roboto/Roboto-Regular.ttf');
+}
+
+@font-face {
+  font-family: Roboto--medium;
+  src: url('../fonts/Roboto/Roboto-Medium.ttf');
+}
+
+@font-face {
+  font-family: Zen Dots;
+  src: url('../fonts/Zen_Dots/ZenDots-Regular.ttf');
 }

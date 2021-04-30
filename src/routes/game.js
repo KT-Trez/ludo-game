@@ -27,7 +27,15 @@ router.post('/boardUpdate', (req, res) => {
             square: pawn.square
           }));
 
-        if (game.player.current.id == reqData.id) {
+        if (game.hasEnded) {
+          resData.type = 'ended';
+          resData.winner = {
+            color: game.winner.color,
+            nick: game.room.clients.find(client => client.id == game.winner.id).nick
+          };
+          res.send(JSON.stringify(resData));
+          console.log(Utils.logLevelBg(2) + `${Utils.fullTimeAndDate(new Date())} [SUCCESS] Updated board ${reqData.room} for ${reqData.id}.` + Utils.logLevelBg('end'));
+        } else if (game.player.current.id == reqData.id) {
           resData.avaliableMoves = game.avaliableMoves;
           resData.skippable = game.skippable;
           resData.type = 'read_write';

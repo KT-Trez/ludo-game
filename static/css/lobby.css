@@ -1,0 +1,95 @@
+.lobby {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.lobby__info {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  user-select: none;
+}
+
+.lobby__players-box {
+  width: 80%;
+  background-color: #f0f0f0;
+  border: 1px solid grey;
+  border-radius: 20px;
+  padding: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.lobby__players-box__player-box {
+  width: 40%;
+  font-size: 15px;
+  border: 1px solid #dedede;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.lobby__players-box__player-box__nick {
+  width: 100%;
+  color: white;
+  text-shadow: 0px 0px 5px #7c7c7c;
+  font-size: 15px;
+  padding: 20px;
+  overflow-wrap: break-word;
+}
+
+.lobby__players-box__player-box__checkbox {
+  outline: 1px solid transparent;
+}
+
+.lobby__players-box__player-box__status {
+  min-width: 55px;
+  background-color: #f0f0f0;
+  font-size: 10px;
+  text-align: center;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  padding: 5px;
+  user-select: none;
+}
+
+.js-me {
+  color: #f0f0f0;
+  font-family: 'Roboto--medium';
+}
+
+.js-me-box {
+  border: 1px solid #BDF39B;
+  box-shadow: 0px 0px 20px 5px #BDF39B;
+}
+
+.js-status--ready {
+  color: green;
+}
+
+.js-status--waiting {
+  color: red;
+}
+
+.js-free__player {
+  font-style: italic;
+}
+
+.js-free__checkbox {
+  opacity: 0.5;
+}
+
+.js-free__status {
+  color: #949494;
+  font-style: italic;
+}

@@ -11,16 +11,21 @@ window.addEventListener('DOMContentLoaded', async () => {
     let hasRejoined = await Player.rejoin(nick);
     if (hasRejoined)
       document.getElementById('rejoin').onclick = () => Board.start();
-    else
+    else {
+      localStorage.clear();
       document.getElementById('rejoin').setAttribute('disabled', true);
+    };
   } else
     document.getElementById('rejoin').setAttribute('disabled', true);
 
   document.getElementById('join').onclick = async () => {
-    let nick = document.getElementById('nick').value;
+    let nick = document.getElementById('nick');
+    if (!nick.value) {
+      nick.classList.add('js-join__elements-box__input--placeholder');
+      return setTimeout(() => nick.classList.remove('js-join__elements-box__input--placeholder'), 3000);
+    };
 
-    if (!nick) return;
-    await Player.join(nick);
+    await Player.join(nick.value);
     lobby.mount();
   };
 });

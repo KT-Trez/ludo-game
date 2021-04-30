@@ -47,6 +47,7 @@ router.post('/lobbyStart', (req, res) => {
 
         if (room.forceStart > 1 && room.forceStart == room.clients.length) {
           console.log(Utils.logLevelBg(0) + `${Utils.fullTimeAndDate(new Date())} [INFO] Starting game ${room.id}.` + Utils.logLevelBg('end'));
+          Room.data.hasFreeRoom = false;
           new Game(room).play();
         };
 

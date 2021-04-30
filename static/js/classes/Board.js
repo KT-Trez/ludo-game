@@ -107,6 +107,13 @@ export default class Board {
         });
       };
 
+      if (resData.type == 'ended') {
+        localStorage.clear();
+        console.log(`${Utils.fullTime(new Date())} [INFO] Game has ended!.`);
+        console.log(resData.winner);
+        return true;
+      };
+
       Board.nextLoad = setTimeout(Board.load, 5000);
       return true;
     } else {

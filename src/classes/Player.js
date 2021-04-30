@@ -4,6 +4,7 @@ module.exports = class Player {
     this.color = client.color;
     this.id = client.id;
     this.finish = [];
+    this.finishedPawns = 0;
     this.pawns = [];
     this.start = clientNumber * 10;
 

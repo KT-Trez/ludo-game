@@ -29,7 +29,7 @@ const lobby = { // eskportowany szablon planszy
           let cellDom = document.createElement('td');
           switch (typeof(cell)) {
             case 'number':
-              cellDom.classList.add('square');
+              cellDom.classList.add('js-square');
               cellDom.setAttribute('id', cell);
               break;
             case 'string':
@@ -39,13 +39,13 @@ const lobby = { // eskportowany szablon planszy
                 cellDom.classList.add(cell, 'home');
 
               if (cell[1] == 'r')
-                cellDom.classList.add('red');
+                cellDom.classList.add('js-red');
               else if (cell[1] == 'b')
-                cellDom.classList.add('blue');
+                cellDom.classList.add('js-blue');
               else if (cell[1] == 'g')
-                cellDom.classList.add('green');
+                cellDom.classList.add('js-green');
               else if (cell[1] == 'y')
-                cellDom.classList.add('yellow');
+                cellDom.classList.add('js-yellow');
               break;
           };
           rowDom.appendChild(cellDom);
@@ -125,13 +125,13 @@ const lobby = { // eskportowany szablon planszy
       </div>
     </nav>
 
+    <div id="movesBox">
+      <button id="skip">Pomiń turę</button>
+    </div>
+
     <div class="center">
       <table class="board" id="board">
       </table>
-    </div>
-
-    <div id="movesBox">
-      <button id="skip">Pomiń</button>
     </div>
     `
 }

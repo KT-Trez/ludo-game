@@ -10,6 +10,8 @@
   <!-- stylesheets & fonts -->
   <link rel="stylesheet" href="css/master.css">
   <link rel="stylesheet" href="css/board.css">
+  <link rel="stylesheet" href="css/join.css">
+  <link rel="stylesheet" href="css/lobby.css">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
 
   <!-- scripts -->
@@ -19,7 +21,6 @@
   <script type="module" src="js/classes/Board.js"></script>
   <script type="module" src="js/classes/Player.js"></script>
 
-  <script type="module" src="js/components/dev.js"></script>
   <script type="module" src="js/components/utils.js"></script>
 
   <!-- templates -->
@@ -33,18 +34,24 @@
 
   <div id="root">
 
-    <div>
-      <p>Dołącz do wolnego pokoju</p>
-      <input id="nick" placeholder="nick" type="text">
-      <button id="join">Dołącz</button>
-      <button id="rejoin">Dołącz ponownie</button>
-    </div>
+    <div class="join">
+      <div class="join__elements-box join__elements-box--light">
+        <p class="join__elements-box__description">Dołącz do wolnego pokoju</p>
+        <input class="join__elements-box__input" id="nick" placeholder="nick" type="text">
+        <div class="join__elements-box__buttons-box">
+          <button class="join__elements-box__buttons-box__button" id="join">Dołącz</button>
+          <button class="join__elements-box__buttons-box__button" id="rejoin">Dołącz ponownie</button>
+        </div>
+      </div>
 
-    <!-- TODO: dodać możliwość dołączania do konkretnego pokoju -->
-    <div style="display: none;">
-      <p>Podaj id pokoju</p>
-      <input placeholder="id" type="text" disabled>
-      <button id="join_id_room" disabled>Dołącz</button>
+      <!-- TODO: dodać możliwość dołączania do konkretnego pokoju -->
+      <div class="join__elements-box join__elements-box--dark">
+        <p class="join__elements-box__description">Podaj id pokoju</p>
+        <input class="join__elements-box__input" placeholder="id" type="text" disabled>
+        <div class="join__elements-box__buttons-box">
+          <button class="join__elements-box__buttons-box__button" id="join_id_room" disabled>Dołącz</button>
+        </div>
+      </div>
     </div>
 
   </div>
