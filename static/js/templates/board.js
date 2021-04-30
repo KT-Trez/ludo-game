@@ -123,7 +123,7 @@ const lobby = { // eskportowany szablon planszy
         </div>
         <div class="game__info-bar__clocks">
           <p class="game__info-bar__clocks__clock">Koniec tury: <span id="js-clocks__turn">--:--</span></p>
-          <p class="game__info-bar__clocks__clock">Wygaśnięcie pokoju: <span id="js-clocks__turn">--:--:--</span></p>
+          <p class="game__info-bar__clocks__clock">Wygaśnięcie pokoju: <span id="js-clocks__room">--:--:--</span></p>
         </div>
       </div>
       <span class="game__info" id="js-game-info">Gra uruchomiona</span>

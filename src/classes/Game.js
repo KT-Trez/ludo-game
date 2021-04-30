@@ -27,6 +27,7 @@ module.exports = class Game {
     };
     this.roll = null;
     this.room = room;
+    this.timer = new Date().getTime() + 60000;
     this.timeout = null;
     this.skippable = false;
     this.winner = null;
@@ -86,6 +87,7 @@ module.exports = class Game {
   nextTurn() {
     this.player.count++;
     this.player.count = this.player.count % this.board.players.length;
+    this.timer = new Date().getTime() + 60000;
     this.skippable = false;
     if (!this.hasEnded) this.play();
   }

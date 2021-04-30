@@ -55,6 +55,9 @@
   background-color: #0B9692;
   color: white;
   text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
   border: 1px solid #08706D;
   padding: 10px;
   user-select: none;
@@ -117,7 +120,7 @@
   background-color: #707070;
   color: white;
   font-size: 15px;
-  text-align: center;
+  text-align: left;
   border: 1px solid transparent;
   border-radius: 8px;
   padding: 10px;
@@ -207,6 +210,10 @@
   border-radius: 15px;
 }
 
+.js-game-info--display-helper {
+  text-shadow: 0px 0px 5px #7c7c7c;
+}
+
 .js-red {
   background-color: #ff7688;
 }
@@ -223,7 +230,15 @@
   background-color: #ffea76;
 }
 
-.js-active {}
+.js-active {
+  border: 1px solid #BDF39B;
+  box-shadow: 0px 0px 20px 1px #BDF39B;
+}
+
+.js-win {
+  border: 1px solid white;
+  box-shadow: 0px 0px 20px 10px white;
+}
 
 .js-hide {
   display: none;

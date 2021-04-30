@@ -6,8 +6,13 @@ import Utils from '../components/utils.js';
 
 export default class Board {
   static nextLoad = null;
+  static timers = {
+    interval: null,
+    move: null,
+    room: null,
+  };
 
-  static clear() {
+  static clear(color) {
     let homeSquares = Array.from(document.getElementsByClassName('js-home'));
     let boardSquares = Array.from(document.getElementsByClassName('js-square'));
     let squares = homeSquares.concat(boardSquares);
@@ -20,6 +25,9 @@ export default class Board {
 
     let movesBox = document.getElementById('js-moves');
     if (movesBox) Array.from(movesBox.children).forEach(child => child.id != 'js-moves__skip' ? child.remove() : null);
+
+    Array.from(document.querySelectorAll(`[data-color]`)).forEach(player => player.classList.remove('js-active'));
+    if (color) document.querySelector(`[data-color='${color}']`).classList.add('js-active');
   }
 
   static async load() {
@@ -38,8 +46,13 @@ export default class Board {
 
       if (resData.skippable)
         document.getElementById('js-moves__skip').classList.remove('js-hide');
+      else
+        document.getElementById('js-moves__skip').classList.add('js-hide');
 
-      Board.clear();
+      Board.timers.room = resData.timers.room;
+      Board.timers.move = resData.timers.move;
+
+      Board.clear(resData.player);
       resData.pawns.forEach(pawn => {
         if (pawn.state == 'home') {
           let homeSquares = document.getElementsByClassName('h' + pawn.player[0]);
@@ -110,8 +123,15 @@ export default class Board {
 
       if (resData.type == 'ended') {
         localStorage.clear();
+        clearInterval(Board.timers.interval);
         console.log(`${Utils.fullTime(new Date())} [INFO] Game has ended!.`);
-        console.log(resData.winner);
+
+        Board.clear();
+        document.querySelector(`[data-color='${resData.winner.color}']`).classList.add('js-win');
+
+        let infoBox = document.getElementById('js-game-info');
+        infoBox.classList.add('js-' + resData.winner.color, 'js-game-info--display-helper');
+        infoBox.innerHTML = '<span style="font-size: 14px;">🎉</span> Wygrywa gracz: ' + decodeURIComponent(resData.winner.nick) + '! <span style="font-size: 14px;">🎉</span>';
         return true;
       };
 
@@ -124,10 +144,25 @@ export default class Board {
     };
   }
 
-  static start() {
+  static async start() {
     console.log(`${Utils.fullTime(new Date())} [INFO] Mounting board and loading pawns data.`);
     board.mount();
-    this.load();
+    await this.load();
+    this.startClocks();
+  }
+
+  static startClocks() {
+    this.timers.interval = setInterval(() => {
+      if (this.timers.move - Date.now() > 0)
+        document.getElementById('js-clocks__turn').innerText = Utils.timeMinutesSeconds(new Date(this.timers.move - Date.now()));
+      else
+        document.getElementById('js-clocks__turn').innerText = '00:00';
+
+      if (this.timers.room - Date.now() > 0)
+        document.getElementById('js-clocks__room').innerText = Utils.fullTime(new Date(this.timers.room - Date.now()));
+      else
+        document.getElementById('js-clocks__room').innerText = '00:00:00';
+    }, 500);
   }
 
 }

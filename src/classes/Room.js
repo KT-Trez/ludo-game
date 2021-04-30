@@ -21,7 +21,7 @@ module.exports = class Room {
     this.forceStart = 0;
     this.id = new Date().getTime() + Math.random() * 1000;
     this.isFree = true;
-    this.timestamp = new Date();
+    this.timer = new Date().getTime() + 18000000;
   }
 
   create() {

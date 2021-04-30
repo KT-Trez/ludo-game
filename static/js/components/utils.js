@@ -22,4 +22,14 @@ export default class Utils { // klasa pomocnicza
     return oneToDwoDigit(time.getHours()) + ':' + oneToDwoDigit(time.getMinutes()) + ':' + oneToDwoDigit(time.getSeconds()) + ' ' + oneToDwoDigit(time.getDate()) + '.' + oneToDwoDigit(time.getMonth()) + '.' + time.getFullYear();
   }
 
+  static timeMinutesSeconds(time) { // funckja zwracająca czas w formacie mm:ss
+    function oneToDwoDigit(number) {
+      if (number.toString().length == 1)
+        return '0' + number;
+      else
+        return number.toString();
+    };
+    return oneToDwoDigit(time.getMinutes()) + ':' + oneToDwoDigit(time.getSeconds());
+  }
+
 }

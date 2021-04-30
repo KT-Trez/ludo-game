@@ -17,7 +17,11 @@ router.post('/boardUpdate', (req, res) => {
       if (player) {
         let resData = {
           pawns: [],
-          timeout: null, // TODO: pozostały czas
+          player: game.player.current.color,
+          timers: {
+            move: game.timer,
+            room: game.room.timer
+          },
         };
         for (var i = 0; i < game.board.players.length; i++)
           game.board.players[i].pawns.forEach(pawn => resData.pawns.push({
