@@ -7,9 +7,9 @@ const lobby = { // eskportowany szablon pionka
   },
   template: // szablon planszy
     `
-    <div class="pawn">
-      <div>
-        <div class="{{playerColor}}">
+    <div class="js-pawn-box">
+      <div class="js-pawn-box__pawn">
+        <div class="js-pawn-box__pawn--color {{playerColor}}">
         </div>
       </div>
     </div>

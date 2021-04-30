@@ -8,8 +8,8 @@ export default class Board {
   static nextLoad = null;
 
   static clear() {
-    let homeSquares = Array.from(document.getElementsByClassName('home'));
-    let boardSquares = Array.from(document.getElementsByClassName('square'));
+    let homeSquares = Array.from(document.getElementsByClassName('js-home'));
+    let boardSquares = Array.from(document.getElementsByClassName('js-square'));
     let squares = homeSquares.concat(boardSquares);
 
     squares.forEach(square => {
@@ -18,8 +18,8 @@ export default class Board {
       square.innerHTML = '';
     });
 
-    let movesBox = document.getElementById('movesBox');
-    if (movesBox) Array.from(movesBox.children).forEach(child => child.id != 'skip' ? child.remove() : null);
+    let movesBox = document.getElementById('js-moves');
+    if (movesBox) Array.from(movesBox.children).forEach(child => child.id != 'js-moves__skip' ? child.remove() : null);
   }
 
   static async load() {
@@ -37,7 +37,7 @@ export default class Board {
       let resData = await res.json();
 
       if (resData.skippable)
-        document.getElementById('skip').style.display = 'initial';
+        document.getElementById('js-moves__skip').classList.remove('js-hide');
 
       Board.clear();
       resData.pawns.forEach(pawn => {
@@ -65,17 +65,18 @@ export default class Board {
       });
 
       if (resData.type == 'read_write') {
-        let movesBox = document.getElementById('movesBox');
+        let movesBox = document.getElementById('js-moves');
         resData.avaliableMoves.forEach(move => {
           let pawn = document.querySelector(`[data-pawn-id='${move.pawn}'][data-pawn-player='${localStorage.getItem('player_color')}']`);
           let square = document.getElementById(move.square.new);
 
           let button = document.createElement('button');
           Object.assign(button, {
+            classList: 'game__body__controls__moves__button',
             innerText: `Pionek: ${move.pawn} | ${move.square.old || 'Baza'} -> ${move.square.new}`,
             onclick: async () => {
               console.log(`${Utils.fullTime(new Date())} [WORKING] Trying to register move ${move.id}.`);
-              square.classList.remove('prieview');
+              square.classList.remove('js-preview');
 
               let res = await fetch('/game/registerMove', {
                 method: 'post',
@@ -94,15 +95,15 @@ export default class Board {
                 console.log(`${Utils.fullTime(new Date())} [ERROR] Failed to register move ${move.id}.`);
             },
             onmouseover: () => {
-              pawn.children[0].children[0].style.backgroundColor = 'white';
-              square.classList.add('prieview');
+              pawn.children[0].children[0].classList.add('js-preview');
+              square.classList.add('js-preview');
             },
             onmouseout: () => {
-              pawn.children[0].children[0].style.backgroundColor = 'black';
-              square.classList.remove('prieview');
+              pawn.children[0].children[0].classList.remove('js-preview');
+              square.classList.remove('js-preview');
             }
           });
-          setTimeout(() => square.classList.remove('prieview'), 5000);
+          setTimeout(() => square.classList.remove('js-preview'), 5000);
           movesBox.append(button);
         });
       };

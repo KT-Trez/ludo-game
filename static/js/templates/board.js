@@ -22,7 +22,7 @@ const lobby = { // eskportowany szablon planszy
         [null, null, null, null, null, null, null, null, null, null, null, null, null],
       ];
 
-      let board = document.getElementById('board');
+      let board = document.getElementById('js-board');
       boardMemory.forEach(row => {
         let rowDom = document.createElement('tr');
         row.forEach(cell => {
@@ -36,7 +36,7 @@ const lobby = { // eskportowany szablon planszy
               if (cell[0] == 'f')
                 cellDom.setAttribute('id', cell);
               else
-                cellDom.classList.add(cell, 'home');
+                cellDom.classList.add(cell, 'js-home');
 
               if (cell[1] == 'r')
                 cellDom.classList.add('js-red');
@@ -66,11 +66,12 @@ const lobby = { // eskportowany szablon planszy
 
       if (res.ok) {
         let resData = await res.json();
-        let playersDom = Array.from(document.getElementsByClassName('player'));
+        let playersDom = Array.from(document.getElementsByClassName('game__info-bar__players__player'));
         resData.forEach((player, i) => {
+          playersDom[i].classList.add('js-' + player.color);
+          playersDom[i].classList.remove('js-hide');
+          playersDom[i].dataset.color = player.color;
           playersDom[i].innerText = decodeURIComponent(player.nick);
-          playersDom[i].classList.add(player.color);
-          playersDom[i].style.display = 'initial';
         });
         console.log(`${Utils.fullTime(new Date())} [SUCCESS] Loaded board and ${resData.length} players.`);
         return true;
@@ -80,7 +81,7 @@ const lobby = { // eskportowany szablon planszy
       };
     },
     registerSkip() {
-      document.getElementById('skip').onclick = async () => {
+      document.getElementById('js-moves__skip').onclick = async () => {
         console.log(`${Utils.fullTime(new Date())} [WORKING] Trying to register skip.`);
         let res = await fetch('/game/registerSkip', {
           method: 'post',
@@ -92,7 +93,7 @@ const lobby = { // eskportowany szablon planszy
 
         if (res.ok) {
           clearTimeout(Board.nextLoad);
-          document.getElementById('skip').style.display = 'none';
+          document.getElementById('js-moves__skip').classList.add('js-hide');
           Board.load();
           console.log(`${Utils.fullTime(new Date())} [SUCCESS] Registered skip.`);
         } else
@@ -112,26 +113,37 @@ const lobby = { // eskportowany szablon planszy
   },
   template: // szablon planszy
     `
-    <nav class="info_bar">
-      <div class="player_box">
-        <p class="player"><i>player_name</i></p>
-        <p class="player"><i>player_name</i></p>
-        <p class="player"><i>player_name</i></p>
-        <p class="player"><i>player_name</i></p>
+    <div class="game">
+      <div class="game__info-bar">
+        <div class="game__info-bar__players" id="js-players">
+          <p class="game__info-bar__players__player js-hide">player_name</p>
+          <p class="game__info-bar__players__player js-hide">player_name</p>
+          <p class="game__info-bar__players__player js-hide">player_name</p>
+          <p class="game__info-bar__players__player js-hide">player_name</p>
+        </div>
+        <div class="game__info-bar__clocks">
+          <p class="game__info-bar__clocks__clock">Koniec tury: <span id="js-clocks__turn">--:--</span></p>
+          <p class="game__info-bar__clocks__clock">Wygaśnięcie pokoju: <span id="js-clocks__turn">--:--:--</span></p>
+        </div>
       </div>
-      <div class="clock_box">
-        <p class="clock">Koniec tury: <span id="turn_clock">--:--</span></p>
-        <p class="clock">Wygaśnięcie pokoju: <span id="room_clock">--:--</span></p>
+      <span class="game__info" id="js-game-info">Gra uruchomiona</span>
+      <div class="game__body">
+        <div class="game__body__controls">
+          <div class="game__body__controls__roll">
+            <button class="game__body__controls__roll__button" id="js-roll__mute">♫</button>
+            <button class="game__body__controls__roll__button" id="js-roll__roll">Rzuć kostką</button>
+            <div id="js-roll__dice">roll.exe</div>
+          </div>
+          <div class="game__body__controls__moves" id="js-moves">
+            <button class="game__body__controls__moves__button js-hide" id="js-moves__skip">Pomiń turę</button>
+          </div>
+        </div>
+        <div class="game__body__board-outer-box">
+          <div class="game__body__board-outer-box__board-inner-box">
+            <table id="js-board"></table>
+          </div>
+        </div>
       </div>
-    </nav>
-
-    <div id="movesBox">
-      <button id="skip">Pomiń turę</button>
-    </div>
-
-    <div class="center">
-      <table class="board" id="board">
-      </table>
     </div>
     `
 }
