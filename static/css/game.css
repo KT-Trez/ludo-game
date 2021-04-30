@@ -26,6 +26,7 @@
   max-width: 250px;
   font-size: 15px;
   text-overflow: ellipsis;
+  overflow: hidden;
   border: 1px solid transparent;
   border-radius: 8px;
   padding: 10px;
@@ -89,6 +90,7 @@
   border-radius: 8px;
   padding: 10px;
   margin-right: 10px;
+  user-select: none;
 }
 
 .game__body__controls__roll__button:hover {
@@ -119,6 +121,7 @@
   border-radius: 8px;
   padding: 10px;
   margin-top: 10px;
+  user-select: none;
 }
 
 .game__body__controls__moves__button:hover {
