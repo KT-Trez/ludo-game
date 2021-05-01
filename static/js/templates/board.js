@@ -72,6 +72,9 @@ const lobby = { // eskportowany szablon planszy
           playersDom[i].classList.remove('js-hide');
           playersDom[i].dataset.color = player.color;
           playersDom[i].innerText = decodeURIComponent(player.nick);
+
+          if (player.color == localStorage.getItem('player_color'))
+            playersDom[i].classList.add('js-info-bar__me');
         });
         console.log(`${Utils.fullTime(new Date())} [SUCCESS] Loaded board and ${resData.length} players.`);
         return true;
@@ -94,6 +97,7 @@ const lobby = { // eskportowany szablon planszy
         if (res.ok) {
           clearTimeout(Board.nextLoad);
           document.getElementById('js-moves__skip').classList.add('js-hide');
+          document.getElementById('js-roll__dice').src = '../../gfx/dice-0.svg';
           Board.load();
           console.log(`${Utils.fullTime(new Date())} [SUCCESS] Registered skip.`);
         } else
@@ -131,8 +135,8 @@ const lobby = { // eskportowany szablon planszy
         <div class="game__body__controls">
           <div class="game__body__controls__roll">
             <button class="game__body__controls__roll__button" id="js-roll__mute">♫</button>
-            <button class="game__body__controls__roll__button" id="js-roll__roll">Rzuć kostką</button>
-            <div id="js-roll__dice">roll.exe</div>
+            <button class="game__body__controls__roll__button" id="js-roll__roll" disabled>Rzuć kostką</button>
+            <img id="js-roll__dice" alt="dice" src="../../gfx/dice-0.svg">
           </div>
           <div class="game__body__controls__moves" id="js-moves">
             <button class="game__body__controls__moves__button js-hide" id="js-moves__skip">Pomiń turę</button>

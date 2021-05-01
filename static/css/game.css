@@ -24,6 +24,7 @@
 
 .game__info-bar__players__player {
   max-width: 250px;
+  font-family: 'Exo';
   font-size: 15px;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -97,12 +98,12 @@
   user-select: none;
 }
 
-.game__body__controls__roll__button:hover {
+.game__body__controls__roll__button:hover:not([disabled]) {
   background-color: white;
   color: #575757;
 }
 
-.game__body__controls__roll__button:active {
+.game__body__controls__roll__button:active:not([disabled]) {
   transform: translateY(2px);
 }
 
@@ -151,6 +152,15 @@
   background-color: #f0f0f0;
   border: 1px solid grey;
   border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#js-roll__dice {
+  width: 40px;
+  height: 40px;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -228,6 +238,11 @@
 
 .js-yellow {
   background-color: #ffea76;
+}
+
+.js-info-bar__me {
+  font-family: 'Exo--bold-italic';
+  text-shadow: 0px 0px 5px #7c7c7c;
 }
 
 .js-active {

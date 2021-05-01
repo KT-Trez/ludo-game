@@ -42,8 +42,9 @@
 .lobby__players-box__player-box__nick {
   width: 100%;
   color: white;
-  text-shadow: 0px 0px 5px #7c7c7c;
+  font-family: 'Exo';
   font-size: 15px;
+  text-shadow: 0px 0px 5px #7c7c7c;
   padding: 20px;
   overflow-wrap: break-word;
 }
@@ -65,7 +66,7 @@
 
 .js-me {
   color: #f0f0f0;
-  font-family: 'Roboto--medium';
+  font-family: 'Exo--bold';
 }
 
 .js-me-box {

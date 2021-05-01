@@ -11,6 +11,7 @@ export default class Board {
     move: null,
     room: null,
   };
+  static currentPlayer = null;
 
   static clear(color) {
     let homeSquares = Array.from(document.getElementsByClassName('js-home'));
@@ -44,10 +45,10 @@ export default class Board {
     if (res.ok) {
       let resData = await res.json();
 
-      if (resData.skippable)
-        document.getElementById('js-moves__skip').classList.remove('js-hide');
-      else
-        document.getElementById('js-moves__skip').classList.add('js-hide');
+      if (resData.type == 'read' && resData.player != Board.currentPlayer) {
+        Board.currentPlayer = resData.player;
+        setTimeout(() => document.getElementById('js-roll__dice').src = '../../gfx/dice-' + resData.roll + '.svg', Utils.getRandomInt(2500, 3000));
+      };
 
       Board.timers.room = resData.timers.room;
       Board.timers.move = resData.timers.move;
@@ -77,49 +78,21 @@ export default class Board {
         };
       });
 
-      if (resData.type == 'read_write') {
-        let movesBox = document.getElementById('js-moves');
-        resData.avaliableMoves.forEach(move => {
-          let pawn = document.querySelector(`[data-pawn-id='${move.pawn}'][data-pawn-player='${localStorage.getItem('player_color')}']`);
-          let square = document.getElementById(move.square.new);
-
-          let button = document.createElement('button');
-          Object.assign(button, {
-            classList: 'game__body__controls__moves__button',
-            innerText: `Pionek: ${move.pawn} | ${move.square.old || 'Baza'} -> ${move.square.new}`,
-            onclick: async () => {
-              console.log(`${Utils.fullTime(new Date())} [WORKING] Trying to register move ${move.id}.`);
-              square.classList.remove('js-preview');
-
-              let res = await fetch('/game/registerMove', {
-                method: 'post',
-                body: JSON.stringify({
-                  id: localStorage.getItem('player_id'),
-                  moveId: move.id,
-                  room: localStorage.getItem('room_id')
-                })
-              });
-
-              if (res.ok) {
-                clearTimeout(Board.nextLoad);
-                Board.load();
-                console.log(`${Utils.fullTime(new Date())} [SUCCESS] Registered move ${move.id}.`);
-              } else
-                console.log(`${Utils.fullTime(new Date())} [ERROR] Failed to register move ${move.id}.`);
-            },
-            onmouseover: () => {
-              pawn.children[0].children[0].classList.add('js-preview');
-              square.classList.add('js-preview');
-            },
-            onmouseout: () => {
-              pawn.children[0].children[0].classList.remove('js-preview');
-              square.classList.remove('js-preview');
-            }
-          });
-          setTimeout(() => square.classList.remove('js-preview'), 5000);
-          movesBox.append(button);
+      if (resData.type == 'read_write' && Board.currentPlayer != resData.player) {
+        document.getElementById('js-roll__dice').src = '../../gfx/dice-0.svg';
+        let rollDices = document.getElementById('js-roll__roll');
+        rollDices.classList.add('js-active');
+        Object.assign(rollDices, {
+          disabled: false,
+          onclick: (event) => {
+            Board.currentPlayer = resData.player;
+            event.target.classList.remove('js-active');
+            event.target.disabled = true;
+            Board.rollDice(resData);
+          }
         });
-      };
+      } else if (resData.type == 'read_write')
+        Board.generateMoves(resData);
 
       if (resData.type == 'ended') {
         localStorage.clear();
@@ -142,6 +115,79 @@ export default class Board {
       setTimeout(Board.load, 5000);
       return false;
     };
+  }
+
+  static async generateMoves(resData) {
+    if (resData.skippable)
+      document.getElementById('js-moves__skip').classList.remove('js-hide');
+    else
+      document.getElementById('js-moves__skip').classList.add('js-hide');
+
+    let movesBox = document.getElementById('js-moves');
+    resData.avaliableMoves.forEach(move => {
+      let pawn = document.querySelector(`[data-pawn-id='${move.pawn}'][data-pawn-player='${localStorage.getItem('player_color')}']`);
+      let square = document.getElementById(move.square.new);
+
+      let button = document.createElement('button');
+      Object.assign(button, {
+        classList: 'game__body__controls__moves__button',
+        innerText: `Pionek: ${move.pawn} | ${move.square.old || 'Baza'} -> ${move.square.new}`,
+        onclick: async () => {
+          console.log(`${Utils.fullTime(new Date())} [WORKING] Trying to register move ${move.id}.`);
+          document.getElementById('js-roll__dice').src = '../../gfx/dice-0.svg';
+          square.classList.remove('js-preview');
+
+          let res = await fetch('/game/registerMove', {
+            method: 'post',
+            body: JSON.stringify({
+              id: localStorage.getItem('player_id'),
+              moveId: move.id,
+              room: localStorage.getItem('room_id')
+            })
+          });
+
+          if (res.ok) {
+            clearTimeout(Board.nextLoad);
+            Board.load();
+            console.log(`${Utils.fullTime(new Date())} [SUCCESS] Registered move ${move.id}.`);
+          } else
+            console.log(`${Utils.fullTime(new Date())} [ERROR] Failed to register move ${move.id}.`);
+        },
+        onmouseover: () => {
+          pawn.children[0].children[0].classList.add('js-preview');
+          square.classList.add('js-preview');
+        },
+        onmouseout: () => {
+          pawn.children[0].children[0].classList.remove('js-preview');
+          square.classList.remove('js-preview');
+        }
+      });
+      setTimeout(() => square.classList.remove('js-preview'), 5000);
+      movesBox.append(button);
+    });
+  }
+
+  static async rollDice(resData) {
+    const diceWalls = [
+      'dice-1.svg',
+      'dice-2.svg',
+      'dice-3.svg',
+      'dice-4.svg',
+      'dice-5.svg',
+      'dice-6.svg'
+    ];
+
+    let dice = document.getElementById('js-roll__dice');
+    let diceCounter = 0;
+    let diceRolling = setInterval(() => {
+      dice.src = '../../gfx/' + diceWalls[Utils.getRandomInt(0, diceWalls.length - 1)];
+      diceCounter++;
+      if (diceCounter >= Utils.getRandomInt(15, 25)) {
+        clearInterval(diceRolling);
+        dice.src = '../../gfx/' + diceWalls[resData.roll - 1];
+        if (resData.type == 'read_write') Board.generateMoves(resData);
+      };
+    }, 100);
   }
 
   static async start() {

@@ -18,6 +18,7 @@ router.post('/boardUpdate', (req, res) => {
         let resData = {
           pawns: [],
           player: game.player.current.color,
+          roll: game.roll,
           timers: {
             move: game.timer,
             room: game.room.timer

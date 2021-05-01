@@ -28,6 +28,12 @@ router.get('/listGame', (req, res) => {
   res.sendStatus(200);
 });
 
+router.get('/setDiceSix', (req, res) => {
+  console.log(Utils.logLevelFg(0) + `${Utils.fullTimeAndDate(new Date())} [DEV] Listing all games.` + Utils.logLevelFg('end'));
+  console.log(Game.list[0].roll = 6);
+  res.sendStatus(200);
+});
+
 router.get('/setWin', (req, res) => {
   console.log(Utils.logLevelFg(0) + `${Utils.fullTimeAndDate(new Date())} [DEV] Seting win for first player.` + Utils.logLevelFg('end'));
   let game = Game.list[0];

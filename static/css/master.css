@@ -35,6 +35,16 @@ body {
 }
 
 @font-face {
+  font-family: Exo--bold;
+  src: url('../fonts/Exo 2.0/Exo2-Bold.otf');
+}
+
+@font-face {
+  font-family: Exo--bold-italic;
+  src: url('../fonts/Exo 2.0/Exo2-BoldItalic.otf');
+}
+
+@font-face {
   font-family: Roboto;
   src: url('../fonts/Roboto/Roboto-Regular.ttf');
 }
@@ -42,9 +52,4 @@ body {
 @font-face {
   font-family: Roboto--medium;
   src: url('../fonts/Roboto/Roboto-Medium.ttf');
-}
-
-@font-face {
-  font-family: Zen Dots;
-  src: url('../fonts/Zen_Dots/ZenDots-Regular.ttf');
 }
