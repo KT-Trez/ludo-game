@@ -224,20 +224,40 @@
   text-shadow: 0px 0px 5px #7c7c7c;
 }
 
+.js-game-info--display-helper--dark {
+  text-shadow: 0px 0px 5px black;
+}
+
 .js-red {
   background-color: #ff7688;
+}
+
+.js-red--text {
+  color: #ff7688;
 }
 
 .js-blue {
   background-color: #767dff;
 }
 
+.js-blue--text {
+  color: #767dff;
+}
+
 .js-green {
   background-color: #76ff91;
 }
 
+.js-green--text {
+  color: #76ff91;
+}
+
 .js-yellow {
   background-color: #ffea76;
+}
+
+.js-yellow--text {
+  color: #ffea76;
 }
 
 .js-info-bar__me {

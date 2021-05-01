@@ -45,6 +45,7 @@ export default class Board {
     if (res.ok) {
       let resData = await res.json();
 
+      document.getElementById('js-game-info').innerHTML = `Tura gracza <span class="js-${resData.player}--text js-game-info--display-helper--dark">${ decodeURIComponent(resData.nick)}</span>`;
       if (resData.type == 'read' && resData.player != Board.currentPlayer) {
         Board.currentPlayer = resData.player;
 
@@ -53,7 +54,7 @@ export default class Board {
           onclick: null
         });
 
-        setTimeout(() => document.getElementById('js-roll__dice').src = '../../gfx/dice-' + resData.roll + '.svg', Utils.getRandomInt(2500, 3000));
+        setTimeout(() => document.getElementById('js-roll__dice').src = '../../gfx/dice-' + resData.roll + '.svg', Utils.getRandomInt(3000, 4000));
       };
 
       Board.timers.room = resData.timers.room;
@@ -114,7 +115,7 @@ export default class Board {
       if (resData.type == 'ended') {
         localStorage.clear();
         clearInterval(Board.timers.interval);
-        console.log(`${Utils.fullTime(new Date())} [INFO] Game has ended!.`);
+        console.log(`${Utils.fullTime(new Date())} [INFO] Game has ended!`);
 
         Board.clear();
         document.querySelector(`[data-color='${resData.winner.color}']`).classList.add('js-win');
@@ -129,6 +130,7 @@ export default class Board {
       return true;
     } else {
       console.log(`${Utils.fullTime(new Date())} [ERROR] Failed to get board update of ${localStorage.getItem('room_id')} as ${localStorage.getItem('player_id')}.`);
+      document.getElementById('js-game-info').innerText = 'Błąd podczas odświeżania stanu gry, oczekiwanie ...';
       setTimeout(Board.load, 5000);
       return false;
     };
@@ -141,6 +143,8 @@ export default class Board {
       document.getElementById('js-moves__skip').classList.add('js-hide');
 
     let movesBox = document.getElementById('js-moves');
+    if (movesBox.children.length > 1) return;
+
     resData.avaliableMoves.forEach(move => {
       let pawn = document.querySelector(`[data-pawn-id='${move.pawn}'][data-pawn-player='${localStorage.getItem('player_color')}']`);
       let square = document.getElementById(move.square.new);
@@ -195,20 +199,14 @@ export default class Board {
     ];
 
     let dice = document.getElementById('js-roll__dice');
-    let diceCounter = 0;
-    let intervalExecuted = false;
-    let diceRolling = setInterval(() => {
-      dice.src = '../../gfx/' + diceWalls[Utils.getRandomInt(0, diceWalls.length - 1)];
-      diceCounter++;
-      if (diceCounter >= Utils.getRandomInt(15, 25)) {
-        clearInterval(diceRolling);
-        if (intervalExecuted) {
-          if (resData.type == 'read_write') Board.generateMoves(resData);
-          intervalStopFlag = true;
-        };
-        dice.src = '../../gfx/' + diceWalls[resData.roll - 1];
-      };
-    }, 100);
+    let diceRolling = setInterval(() => dice.src = '../../gfx/' + diceWalls[Utils.getRandomInt(0, diceWalls.length - 1)], 100);
+
+    let rollingTime = Utils.getRandomInt(1500, 2500);
+    setTimeout(() => {
+      clearInterval(diceRolling);
+      dice.src = '../../gfx/' + diceWalls[resData.roll - 1];
+    }, rollingTime);
+    setTimeout(() => Board.generateMoves(resData), rollingTime + Utils.getRandomInt(800, 1500));
   }
 
   static async start() {

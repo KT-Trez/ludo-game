@@ -16,6 +16,7 @@ router.post('/boardUpdate', (req, res) => {
       let player = game.room.clients.find(player => player.id == reqData.id);
       if (player) {
         let resData = {
+          nick: game.room.clients.find(client => client.id == game.player.current.id).nick,
           pawns: [],
           player: game.player.current.color,
           roll: game.roll,

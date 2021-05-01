@@ -65,7 +65,7 @@ module.exports = class Game {
           this.avaliableMoves.push(new Move('start', pawn, this));
       };
 
-      if (finishSquares.find(square => square == (pawn.square + this.roll) % this.board.squareCount) && (pawn.square <= this.player.current.start || pawn.square - this.roll < 0) && !pawn.hasStarted) {
+      if (finishSquares.find(square => square == (pawn.square + this.roll) % this.board.squareCount) && (pawn.square <= this.player.current.start || (pawn.square - this.roll <= 0 && pawn.square > this.board.squareCount / 2)) && !pawn.hasStarted) { // TODO: zoptymalizować warunki wprowadzania pionków dla 1 gracza 
         let isFinishSquareAllied = this.map.find(anyPawn => anyPawn.square == 'f' + this.player.current.color[0] + (pawn.square + this.roll) % this.board.squareCount);
 
         if (pawn.state == 'board' && !isFinishSquareAllied) {
