@@ -21,6 +21,8 @@ const lobby = { // eskportowany szablon planszy
         [null, 'hy', 'hy', null, null, 22, 21, 20, null, null, 'hg', 'hg', null],
         [null, null, null, null, null, null, null, null, null, null, null, null, null],
       ];
+      const homes = [0, 10, 20, 30];
+      const homesColor = ['js-red', 'js-blue', 'js-green', 'js-yellow']
 
       let board = document.getElementById('js-board');
       boardMemory.forEach(row => {
@@ -29,7 +31,7 @@ const lobby = { // eskportowany szablon planszy
           let cellDom = document.createElement('td');
           switch (typeof(cell)) {
             case 'number':
-              cellDom.classList.add('js-square');
+              cellDom.classList.add('js-square', homes.includes(cell) ? homesColor[homes.indexOf(cell)] : null);
               cellDom.setAttribute('id', cell);
               break;
             case 'string':
@@ -134,7 +136,7 @@ const lobby = { // eskportowany szablon planszy
       <div class="game__body">
         <div class="game__body__controls">
           <div class="game__body__controls__roll">
-            <button class="game__body__controls__roll__button" id="js-roll__mute">♫</button>
+            <button class="game__body__controls__roll__button" id="js-roll__say">♫</button>
             <button class="game__body__controls__roll__button" id="js-roll__roll" disabled>Rzuć kostką</button>
             <img id="js-roll__dice" alt="dice" src="../../gfx/dice-0.svg">
           </div>

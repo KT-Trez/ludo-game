@@ -102,8 +102,8 @@ const lobby = { // eskportowany szablon lobby
   },
   async action() { // uruchomiony szablon
     console.log(`${Utils.fullTime(new Date())} [INFO] Awaiting for lobby data and players.`);
-    await this.data.getLobbyData();
     this.data.lobbyInterval = setInterval(() => this.data.getLobbyData(), 5000);
+    await this.data.getLobbyData();
   },
   mount() { // montowanie i uruchamianie szablonu
     document.getElementById('root').innerHTML = this.template;

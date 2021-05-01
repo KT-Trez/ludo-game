@@ -47,6 +47,12 @@ export default class Board {
 
       if (resData.type == 'read' && resData.player != Board.currentPlayer) {
         Board.currentPlayer = resData.player;
+
+        Object.assign(document.getElementById('js-roll__say'), {
+          disabled: true,
+          onclick: null
+        });
+
         setTimeout(() => document.getElementById('js-roll__dice').src = '../../gfx/dice-' + resData.roll + '.svg', Utils.getRandomInt(2500, 3000));
       };
 
@@ -80,6 +86,7 @@ export default class Board {
 
       if (resData.type == 'read_write' && Board.currentPlayer != resData.player) {
         document.getElementById('js-roll__dice').src = '../../gfx/dice-0.svg';
+
         let rollDices = document.getElementById('js-roll__roll');
         rollDices.classList.add('js-active');
         Object.assign(rollDices, {
@@ -89,6 +96,16 @@ export default class Board {
             event.target.classList.remove('js-active');
             event.target.disabled = true;
             Board.rollDice(resData);
+          }
+        });
+
+        let say = document.getElementById('js-roll__say');
+        Object.assign(say, {
+          disabled: false,
+          onclick: () => {
+            let syntezator = new SpeechSynthesisUtterance('Maszyna losująca przepowiada przewspaniały wynik w postaci cyfry ' + resData.roll);
+            syntezator.lang = 'pl-PL';
+            speechSynthesis.speak(syntezator);
           }
         });
       } else if (resData.type == 'read_write')
@@ -179,13 +196,17 @@ export default class Board {
 
     let dice = document.getElementById('js-roll__dice');
     let diceCounter = 0;
+    let intervalExecuted = false;
     let diceRolling = setInterval(() => {
       dice.src = '../../gfx/' + diceWalls[Utils.getRandomInt(0, diceWalls.length - 1)];
       diceCounter++;
       if (diceCounter >= Utils.getRandomInt(15, 25)) {
         clearInterval(diceRolling);
+        if (intervalExecuted) {
+          if (resData.type == 'read_write') Board.generateMoves(resData);
+          intervalStopFlag = true;
+        };
         dice.src = '../../gfx/' + diceWalls[resData.roll - 1];
-        if (resData.type == 'read_write') Board.generateMoves(resData);
       };
     }, 100);
   }

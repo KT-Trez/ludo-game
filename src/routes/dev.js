@@ -28,9 +28,12 @@ router.get('/listGame', (req, res) => {
   res.sendStatus(200);
 });
 
-router.get('/setDiceSix', (req, res) => {
+router.get('/setDice', (req, res) => {
   console.log(Utils.logLevelFg(0) + `${Utils.fullTimeAndDate(new Date())} [DEV] Listing all games.` + Utils.logLevelFg('end'));
-  console.log(Game.list[0].roll = 6);
+  if (req.query.number && typeof(req.query.number) == 'number') {
+    Game.list[0].roll = number;
+    Game.list[0].createMoves();
+  };
   res.sendStatus(200);
 });
 

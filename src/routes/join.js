@@ -23,8 +23,9 @@ router.post('/lobby', (req, res) => {
     if (room) {
       let resData = {
         forceStart: room.forceStart,
-        players: room.clients
+        players: []
       };
+      room.clients.forEach(client => resData.players.push(Client.createSecretClient(client, reqData)));
 
       res.send(JSON.stringify(resData));
     } else

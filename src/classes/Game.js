@@ -35,6 +35,7 @@ module.exports = class Game {
     for (let i = 0; i < room.clients.length; i++)
       this.board.players.push(new Player(room.clients[i], i));
     Game.list.push(this);
+    this.room.forceStart = this.room.clients.length;
   }
 
   checkForWin() {

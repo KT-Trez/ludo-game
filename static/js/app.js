@@ -10,7 +10,26 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (localStorage.getItem('player_color') && localStorage.getItem('player_id') && localStorage.getItem('room_id')) {
     let hasRejoined = await Player.rejoin(nick);
     if (hasRejoined)
-      document.getElementById('rejoin').onclick = () => Board.start();
+      document.getElementById('rejoin').onclick = async () => {
+        let reqData = {
+          id: localStorage.getItem('player_id'),
+          room: localStorage.getItem('room_id')
+        };
+
+        let res = await fetch('/join/lobby', {
+          body: JSON.stringify(reqData),
+          method: 'post'
+        });
+
+        if (res.ok) {
+          let resData = await res.json();
+          if (resData.forceStart == resData.players.length && resData.forceStart > 1)
+            Board.start();
+          else
+            lobby.mount();
+        } else
+          Board.start();
+      };
     else {
       localStorage.clear();
       document.getElementById('rejoin').setAttribute('disabled', true);
