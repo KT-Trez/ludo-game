@@ -16,6 +16,12 @@ router.get('/fillRoom', (req, res) => {
   res.sendStatus(200);
 });
 
+router.get('/getGameMap', (req, res) => {
+  console.log(Utils.logLevelFg(0) + `${Utils.fullTimeAndDate(new Date())} [DEV] Listing game map.` + Utils.logLevelFg('end'));
+  console.log(Game.list[0].map);
+  res.sendStatus(200);
+});
+
 router.get('/listRoom', (req, res) => {
   console.log(Utils.logLevelFg(0) + `${Utils.fullTimeAndDate(new Date())} [DEV] Listing all rooms.` + Utils.logLevelFg('end'));
   console.log(Room.list);
@@ -50,15 +56,15 @@ router.get('/setWin', (req, res) => {
   firstPlayer.pawns.forEach((pawn, i) => {
     if (i < firstPlayer.pawns.length - 1)
       Object.assign(pawn, {
-        hasStarted: false,
+        movedSquares: 30,
         state: 'finished',
         square: 'f' + firstPlayer.color[0] + firstPlayer.finish[i + 1]
       });
     else
       Object.assign(pawn, {
-        hasStarted: false,
+        movedSquares: 30,
         state: 'board',
-        square: firstPlayer.start
+        square: game.board.squareCount - 1
       });
     game.map.push(pawn);
   });

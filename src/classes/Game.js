@@ -65,7 +65,7 @@ module.exports = class Game {
           this.avaliableMoves.push(new Move('start', pawn, this));
       };
 
-      if (finishSquares.find(square => square == (pawn.square + this.roll) % this.board.squareCount) && (pawn.square <= this.player.current.start || (pawn.square - this.roll <= 0 && pawn.square > this.board.squareCount / 2)) && !pawn.hasStarted) { // TODO: zoptymalizować warunki wprowadzania pionków dla 1 gracza 
+      if (finishSquares.find(square => square == (pawn.square + this.roll) % this.board.squareCount) && (pawn.movedSquares > this.board.squareCount / 2 && pawn.movedSquares < this.board.squareCount)) {
         let isFinishSquareAllied = this.map.find(anyPawn => anyPawn.square == 'f' + this.player.current.color[0] + (pawn.square + this.roll) % this.board.squareCount);
 
         if (pawn.state == 'board' && !isFinishSquareAllied) {
@@ -118,9 +118,9 @@ module.exports = class Game {
       this.map.push(movingPawn);
     } else if (move.action == 'move') {
       killPawn(this);
+      movingPawn.movedSquares = (movingPawn.movedSquares + this.roll) % this.board.squareCount;
       Object.assign(movingPawn, {
         state: 'board',
-        hasStarted: false,
         square: move.square.new
       });
     } else if (move.action == 'finish') {
@@ -140,7 +140,7 @@ module.exports = class Game {
       if (enemyPawn) {
         Object.assign(enemyPawn, {
           state: 'home',
-          hasStarted: true,
+          movedSquares: 0,
           square: null
         });
         thisGame.map.splice(thisGame.map.indexOf(enemyPawn), 1);

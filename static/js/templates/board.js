@@ -9,15 +9,15 @@ const lobby = { // eskportowany szablon planszy
       const boardMemory = [
         [null, null, null, null, null, null, null, null, null, null, null, null, null],
         [null, 'hr', 'hr', null, null, 0, 1, 2, null, null, 'hb', 'hb', null],
-        [null, 'hr', 'hr', null, null, 39, 'fr1', 3, null, null, 'hb', 'hb', null],
-        [null, null, null, null, null, 38, 'fr2', 4, null, null, null, null, null],
-        [null, null, null, null, null, 37, 'fr3', 5, null, null, null, null, null],
-        [null, 32, 33, 34, 35, 36, 'fr4', 6, 7, 8, 9, 10, null],
-        [null, 31, 'fy31', 'fy32', 'fy33', 'fy34', null, 'fb14', 'fb13', 'fb12', 'fb11', 11, null],
-        [null, 30, 29, 28, 27, 26, 'fg24', 16, 15, 14, 13, 12, null],
-        [null, null, null, null, null, 25, 'fg23', 17, null, null, null, null, null],
-        [null, null, null, null, null, 24, 'fg22', 18, null, null, null, null, null],
-        [null, 'hy', 'hy', null, null, 23, 'fg21', 19, null, null, 'hg', 'hg', null],
+        [null, 'hr', 'hr', null, null, 39, 'fr0', 3, null, null, 'hb', 'hb', null],
+        [null, null, null, null, null, 38, 'fr1', 4, null, null, null, null, null],
+        [null, null, null, null, null, 37, 'fr2', 5, null, null, null, null, null],
+        [null, 32, 33, 34, 35, 36, 'fr3', 6, 7, 8, 9, 10, null],
+        [null, 31, 'fy30', 'fy31', 'fy32', 'fy33', null, 'fb13', 'fb12', 'fb11', 'fb10', 11, null],
+        [null, 30, 29, 28, 27, 26, 'fg23', 16, 15, 14, 13, 12, null],
+        [null, null, null, null, null, 25, 'fg22', 17, null, null, null, null, null],
+        [null, null, null, null, null, 24, 'fg21', 18, null, null, null, null, null],
+        [null, 'hy', 'hy', null, null, 23, 'fg20', 19, null, null, 'hg', 'hg', null],
         [null, 'hy', 'hy', null, null, 22, 21, 20, null, null, 'hg', 'hg', null],
         [null, null, null, null, null, null, null, null, null, null, null, null, null],
       ];
@@ -109,9 +109,9 @@ const lobby = { // eskportowany szablon planszy
   },
   async action() { // uruchomiony szablon
     console.log(`${Utils.fullTime(new Date())} [WORKING] Loading board and players.`);
+    await this.data.loadPlayers();
     this.data.loadBoard();
     this.data.registerSkip();
-    await this.data.loadPlayers();
   },
   mount() { // montowanie i uruchamianie szablonu
     document.getElementById('root').innerHTML = this.template;
