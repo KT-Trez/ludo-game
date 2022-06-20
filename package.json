@@ -1,27 +1,26 @@
 {
   "author": {
-    "name": "Trez",
-    "email": "bartlomiej@10g.pl"
+    "email": "bartlomiej.was@10g.pl",
+    "name": "Bartlomiej 'Trez' Was"
   },
   "bugs": {
-    "url": "https://github.com/KT-Trez/Ludo/issues"
+    "email": "kt.bugs@10g.pl",
+    "url": "https://github.com/KT-Trez/ludo-game/issues"
   },
   "dependencies": {
     "express": "^4.17.1"
   },
   "description": "Ludo online game.",
-  "homepage": "https://github.com/KT-Trez/Ludo#readme",
   "keywords": [
-    "express-js",
-    "server",
-    "game",
-    "ludo"
+    "board game",
+    "ludo game",
+    "multiplayer game"
   ],
   "main": "server.js",
   "name": "ludo-online",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KT-Trez/Ludo.git"
+    "url": "https://github.com/KT-Trez/ludo-game"
   },
   "scripts": {
     "start": "node server.js"
